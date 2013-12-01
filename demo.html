@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>jQuery helix</title>
+	<link rel="stylesheet" type="text/css" href="src/jquery.helix.css">
+	<script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="bower_components/jquery.transit/site/jquery.transit-0.9.9.min.js"></script>
+	<script type="text/javascript" src="src/jquery.helix.js"></script>
+</head>
+<body>
+
+<style type="text/css">
+
+#slider {
+	width: 1000px;
+	height: 300px;
+}
+
+#slider li{
+	height: 300px;
+	background-color: #ff0188;
+}
+#slider li:nth-child(odd){
+	background-color: #00aabb;
+}
+</style>
+
+	<ul id="slider">
+		<li>A</li>
+		<li>B</li>
+		<li>C</li>
+		<li>D</li>
+		<li>E</li>
+		<li>F</li>
+		<li>G</li>
+		<li>H</li>
+	</ul>
+
+<script type="text/javascript">
+	var $slider = $("#slider");
+	$slider.helix();
+
+	$(document.body).keypress(function(){
+		$slider.helix('next');
+	});
+</script>
+</body>
+</html>

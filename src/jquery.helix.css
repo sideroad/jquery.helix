@@ -1,0 +1,37 @@
+.helix-container {
+  position: relative;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+  margin: auto;
+  -webkit-transition: -webkit-transform-origin 300ms cubic-bezier(.17,.64,.54,.94),-webkit-transform 300ms cubic-bezier(.17,.64,.54,.94),visibility 300ms cubic-bezier(.17,.64,.54,.94),opacity 300ms cubic-bezier(.17,.64,.54,.94);
+}
+
+.helix{
+	width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+	padding: 0;
+	-webkit-transition: -webkit-transform-origin 300ms cubic-bezier(.17,.64,.54,.94),-webkit-transform 300ms cubic-bezier(.17,.64,.54,.94),visibility 300ms cubic-bezier(.17,.64,.54,.94),opacity 300ms cubic-bezier(.17,.64,.54,.94);
+}
+
+.helix > li{
+	position: absolute;
+	display: block;
+	top: 0px;
+	width: 300px;
+	list-style-type: none;
+	-webkit-transition: -webkit-transform-origin 150ms cubic-bezier(0,.41,1,.53),-webkit-transform 150ms cubic-bezier(0,.41,1,.53),visibility 150ms cubic-bezier(0,.41,1,.53),opacity 150ms cubic-bezier(0,.41,1,.53);
+	margin: 0;
+	opacity: 0.5;
+}
+
+.helix > li:first-child,
+.helix > li:last-child{
+	opacity: 0.1;
+}
+
+.helix > li.focus{
+	opacity: 1;	
+}
