@@ -9,14 +9,31 @@
     "**/*.html",
     "package.json",
     "*.tap",
-    "testem.json"
+    "testem.json",
+    "bower_components",
+    "test",
+    "tests"
   ],
   "dependencies": {
-    "jquery": ">= 1.8"
+    "jquery": "~2.0.3",
+    "jquery.transit": "~0.9.9"
+  },
+  "devDependencies": {
+    "mousetrap": "~1.4.6"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/sideroad/jquery.helix"
-  }
-
+  },
+  "authors": [
+    "sideroad <sideroad.jp@gmail.com>"
+  ],
+  "description": "jQuery 3D slider with helix effect",
+  "keywords": [
+    "jquery",
+    "slider",
+    "helix"
+  ],
+  "license": "MIT",
+  "private": true
 }

@@ -1,6 +1,14 @@
 (function( $ ){
 
-	var initialize = function($elem){
+	var refreshClass = function($children, data){
+			$children.removeClass('show first last focus');
+
+			$children.filter(':lt('+data.devide+')').addClass('show');
+			$children.filter(':first').addClass('first');
+			$children.filter(':eq('+(data.half)+')').addClass('focus');
+			$children.filter(':eq('+(data.devide-1)+')').addClass('last');
+		},
+	    initialize = function($elem){
 			var children = $elem.addClass("helix").children(),
 			    options = $.extend({
 					width: $elem.width(),
@@ -8,7 +16,7 @@
 					item: {
 						width: children.width() 
 					},
-					maxDevide: 8,
+					devide: 8,
 					rampRate: 2,
 					margin: '50%'
 				}, arguments[1], true),
@@ -20,24 +28,39 @@
 			    	return  width + margin;
 			    })(options.margin),
 			    length = children.length,
+			    devide = options.devide > length ? length: options.devide,
 			    deg = 0,
-			    distance = 360 / length,
-			    translateZ = Math.round( ( size / 2 ) / Math.tan( Math.PI / length ) ),
+			    distance = 360 / devide,
+			    translateZ = Math.round( ( size / 2 ) / Math.tan( Math.PI / devide ) ),
 			    cnt = 0,
-			    half = parseInt( length/2 ),
+			    half = parseInt( devide/2 ),
 			    $container = $("<div class='helix-container' ></div>").css({
 			    	'-webkit-perspective': options.width,
 			    	perspective: options.width,
 			    	width: options.item.width,
 			    	height: options.height
 			    }),
-			    rotateY = ((half+(length%2))*distance),
-			    ramp = options.rampRate * options.height / length;
+			    rotateY = ((half+(devide%2))*distance),
+			    ramp = options.rampRate * options.height / length,
+			    data = {
+			    	distance: distance,
+			    	length: length,
+			    	size: size,
+			    	children: children,
+			    	translateZ: translateZ,
+			    	rotateY: rotateY,
+			    	focus: half,
+			    	first: 0,
+			    	last: children.length-1,
+			    	half: half,
+			    	ramp: ramp,
+			    	devide: devide
+			    };
 
-			children.filter(':gt('+(half-1+(length%2))+')').prependTo($elem);
+			//prepend for infinate loop
+			children.filter(':gt('+(length - (devide/2) -1+(length%2))+')').prependTo($elem);
+
 			children = $elem.children();
-			children.filter(':eq('+(half)+')').addClass('focus');
-
 			children.each(function(){
 					var $this = $(this);
 					$this.css('transform', 'rotateY( '+parseInt( deg )+'deg ) translateZ( '+translateZ+'px )')
@@ -48,6 +71,7 @@
 					cnt++;
 			});
 
+			refreshClass( children, data );
 	
 			$elem.wrap($container);
 			$elem.css({
@@ -55,19 +79,7 @@
 			     	width: options.item.width
 			     })
 			     .show()
-			     .data({
-			    	distance: distance,
-			    	length: length,
-			    	size: size,
-			    	children: children,
-			    	translateZ: translateZ,
-			    	rotateY: rotateY,
-			    	focus: half,
-			    	first: 0,
-			    	last: length-1,
-			    	half: half,
-			    	ramp: ramp
-			    });
+			     .data(data);
 
 			return $elem;
 		},
@@ -82,31 +94,33 @@
 			    first = data.first,
 			    last = data.last,
 			    half = data.half,
-			    ramp = data.ramp;
+			    ramp = data.ramp,
+			    distance = data.distance,
+			    devide = data.devide;
 
 			rotateY += distance*direction*-1;
 			focus += direction;
 			last += direction;
 			first += direction;
 
-			children = $elem.children();
 
-			children.filter(':eq('+half+')').removeClass('focus');
+			children = $elem.children();
 
 			if(direction === 1){
 				children.filter(':first').transition({
 					y: last * ramp,
+					rotateY: last * distance,
 					duration: 0
 				}).appendTo($elem);
-
 			} else {
 				children.filter(':last').transition({
 					y: first * ramp,
+					rotateY: first * distance,
 					duration: 0
 				}).prependTo($elem);
 			}
 
-			children.filter(':eq('+(half+direction)+')').addClass('focus');
+			refreshClass( $elem.children(), data );
 			$elem.css('transform', 'translateY('+(focus*ramp*-1)+'px) translateZ( -'+translateZ+'px ) rotateY('+parseInt( rotateY )+'deg)')
 			     .data({
 			     	rotateY: rotateY,

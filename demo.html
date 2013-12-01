@@ -5,6 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="src/jquery.helix.css">
 	<script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="bower_components/jquery.transit/site/jquery.transit-0.9.9.min.js"></script>
+	<script type="text/javascript" src="bower_components/mousetrap/mousetrap.js"></script>
 	<script type="text/javascript" src="src/jquery.helix.js"></script>
 </head>
 <body>
@@ -17,32 +18,45 @@
 }
 
 #slider li{
+	text-align: center;
+	font-size: 100px;
 	height: 300px;
-	background-color: #ff0188;
 }
-#slider li:nth-child(odd){
-	background-color: #00aabb;
+#slider li.zero,
+#slider li.two,
+#slider li.four,
+#slider li.six,
+#slider li.eight{
+	background-color: #22ccff;
+}
+#slider li.one,
+#slider li.three,
+#slider li.five,
+#slider li.seven,
+#slider li.nine{
+	background-color: #ff22cc;
 }
 </style>
 
 	<ul id="slider">
-		<li>A</li>
-		<li>B</li>
-		<li>C</li>
-		<li>D</li>
-		<li>E</li>
-		<li>F</li>
-		<li>G</li>
-		<li>H</li>
+		<li class="zero" >0</li>
+		<li class="one">1</li>
+		<li class="two">2</li>
+		<li class="three">3</li>
+		<li class="four">4</li>
+		<li class="five">5</li>
+		<li class="six">6</li>
+		<li class="seven">7</li>
+		<li class="eight">8</li>
+		<li class="nine">9</li>
 	</ul>
 
 <script type="text/javascript">
 	var $slider = $("#slider");
 	$slider.helix();
 
-	$(document.body).keypress(function(){
-		$slider.helix('next');
-	});
+	Mousetrap.bind('left', function() { $slider.helix('prev'); })
+	Mousetrap.bind('right', function() { $slider.helix('next'); });
 </script>
 </body>
 </html>
