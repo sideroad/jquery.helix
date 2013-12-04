@@ -12,7 +12,10 @@
     "testem.json",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "src",
+    "README.md",
+    "Gruntfile.js"
   ],
   "dependencies": {
     "jquery": "~2.0.3",
