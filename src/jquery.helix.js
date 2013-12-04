@@ -3,10 +3,10 @@
 	var refreshClass = function($children, data){
 			$children.removeClass('show first last focus');
 
-			$children.filter(':lt('+data.devide+')').addClass('show');
+			$children.filter(':lt('+(data.devide*data.turns)+')').addClass('show');
 			$children.filter(':first').addClass('first');
 			$children.filter(':eq('+(data.half)+')').addClass('focus');
-			$children.filter(':eq('+(data.devide-1)+')').addClass('last');
+			$children.filter(':eq('+((data.devide*data.turns)-1)+')').addClass('last');
 		},
 	    initialize = function($elem){
 			var children = $elem.addClass("helix").children(),
@@ -14,10 +14,11 @@
 					width: $elem.width(),
 					height: $elem.height(),
 					item: {
-						width: children.width() 
+						width: children.width(),
+						height: children.height()
 					},
-					devide: 8,
-					rampRate: 2,
+					devide: 10,
+					turns: 3,
 					margin: '50%'
 				}, arguments[1], true),
 			    size = (function(margin){
@@ -33,7 +34,7 @@
 			    distance = 360 / devide,
 			    translateZ = Math.round( ( size / 2 ) / Math.tan( Math.PI / devide ) ),
 			    cnt = 0,
-			    half = parseInt( devide/2 ),
+			    half = parseInt( (devide*options.turns)/2 ),
 			    $container = $("<div class='helix-container' ></div>").css({
 			    	'-webkit-perspective': options.width,
 			    	perspective: options.width,
@@ -41,7 +42,11 @@
 			    	height: options.height
 			    }),
 			    rotateY = ((half+(devide%2))*distance),
-			    ramp = options.rampRate * options.height / length,
+			    height = options.height,
+			    center = ((height / 2) - (options.item.height / 2 )),
+			    start = 0,
+			    start = (-height/(2*options.turns)),
+			    ramp = (center - start) / half,
 			    data = {
 			    	distance: distance,
 			    	length: length,
@@ -50,22 +55,27 @@
 			    	translateZ: translateZ,
 			    	rotateY: rotateY,
 			    	focus: half,
+			    	turns: options.turns,
 			    	first: 0,
 			    	last: children.length-1,
 			    	half: half,
 			    	ramp: ramp,
-			    	devide: devide
+			    	devide: devide,
+			    	height: height,
+			    	start : start
 			    };
 
 			//prepend for infinate loop
-			children.filter(':gt('+(length - (devide/2) -1+(length%2))+')').prependTo($elem);
+			children.filter(':gt('+(length - half -1+(length%2))+')').prependTo($elem);
 
 			children = $elem.children();
 			children.each(function(){
 					var $this = $(this);
-					$this.css('transform', 'rotateY( '+parseInt( deg )+'deg ) translateZ( '+translateZ+'px )')
+					$this.css({
+						     'transform': 'rotateY( '+parseInt( deg )+'deg ) translateZ( '+translateZ+'px )'
+						 })
 					     .transition({
-						     y: cnt*ramp
+						     y: start + (cnt*ramp)
 					     });
 					deg += distance;
 					cnt++;
@@ -75,7 +85,7 @@
 	
 			$elem.wrap($container);
 			$elem.css({
-			     	transform: 'translateY(-'+(half*ramp)+'px) translateZ( -'+translateZ+'px ) rotateY('+rotateY+'deg)',
+			     	transform: 'translateY(0px) translateZ( -'+translateZ+'px ) rotateY('+rotateY+'deg)',
 			     	width: options.item.width
 			     })
 			     .show()
@@ -96,7 +106,9 @@
 			    half = data.half,
 			    ramp = data.ramp,
 			    distance = data.distance,
-			    devide = data.devide;
+			    height = data.height,
+			    devide = data.devide,
+			    start = data.start;
 
 			rotateY += distance*direction*-1;
 			focus += direction;
@@ -108,20 +120,21 @@
 
 			if(direction === 1){
 				children.filter(':first').transition({
-					y: last * ramp,
+					y: start + (last * ramp),
 					rotateY: last * distance,
 					duration: 0
 				}).appendTo($elem);
 			} else {
 				children.filter(':last').transition({
-					y: first * ramp,
+					y: start + (first * ramp),
 					rotateY: first * distance,
 					duration: 0
 				}).prependTo($elem);
 			}
+			console.log(first, ramp)
 
 			refreshClass( $elem.children(), data );
-			$elem.css('transform', 'translateY('+(focus*ramp*-1)+'px) translateZ( -'+translateZ+'px ) rotateY('+parseInt( rotateY )+'deg)')
+			$elem.css('transform', 'translateY('+(first*ramp*-1)+'px) translateZ( -'+translateZ+'px ) rotateY('+parseInt( rotateY )+'deg)')
 			     .data({
 			     	rotateY: rotateY,
 			     	children : children,
@@ -144,6 +157,6 @@
 	$.fn.helix = function(options){
 		return (options === 'next') ? next(this) :
 		       (options === 'prev') ? prev(this) :
-		       initialize(this);
+		       initialize(this, options);
 	};
 })(jQuery);
