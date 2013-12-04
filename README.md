@@ -2,16 +2,15 @@
 
 ##Install
 
-###Jam
-```sh
-jam install jquery.helix
-```
-
-###Bower
 ```sh
 bower install jquery.helix
 ```
 
-### Usage
-Please check the [jquery.helix](http://sideroad.secret.jp/plugins/jQueryhelix/)
+##Set up demo
 
+```
+bower install .
+```
+
+## Usage
+Please check the [jquery.helix](http://sideroad.secret.jp/plugins/jQueryHelix/)

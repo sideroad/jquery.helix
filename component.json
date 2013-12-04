@@ -1,7 +1,7 @@
 {
   "name": "jquery.helix",
   "version": "1.0.0",
-  "main": "./dist/jquery.helix.js",
+  "main": "./dist/jquery.helix.min.js",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -35,5 +35,6 @@
     "helix"
   ],
   "license": "MIT",
-  "private": true
+  "private": true,
+  "homepage": "https://github.com/sideroad/jquery.helix"
 }
