@@ -35,6 +35,6 @@
     "helix"
   ],
   "license": "MIT",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/sideroad/jquery.helix"
 }
