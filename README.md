@@ -1,4 +1,4 @@
-# jquery.helix[![Build Status](https://travis-ci.org/sideroad/jquery.helix.png?branch=master)](https://travis-ci.org/sideroad/jquery.helix)
+# jQuery Helix Slider
 
 ##Install
 
